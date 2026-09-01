@@ -361,7 +361,7 @@ def week_from_date(date_str: str) -> str:
 - [ ] **Step 4: Run to verify pass**
 
 Run: `.venv/Scripts/python -m pytest tests/test_dates.py -v`
-Expected: 10 passed
+Expected: 9 passed
 
 - [ ] **Step 5: Commit**
 
@@ -2213,7 +2213,7 @@ Expected: 15 passed
 - [ ] **Step 7: Run the full test suite so far**
 
 Run: `.venv/Scripts/python -m pytest -v`
-Expected: all tests across Tasks 1–6 pass (48 tests)
+Expected: all tests across Tasks 1–6 pass (54 tests)
 
 - [ ] **Step 8: Commit**
 
@@ -2852,12 +2852,12 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run to verify pass**
 
 Run: `.venv/Scripts/python -m pytest tests/test_build.py tests/test_build_main.py -v`
-Expected: 16 passed
+Expected: 18 passed
 
 - [ ] **Step 5: Run the entire suite**
 
 Run: `.venv/Scripts/python -m pytest -v`
-Expected: all tests pass (64 tests)
+Expected: all tests pass (72 tests)
 
 - [ ] **Step 6: Commit**
 
