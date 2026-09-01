@@ -4,6 +4,13 @@ normalized name, until its stated release date passes.
 Input:  data/upcoming.json (existing calendar, if any) + this week's
         data/scored/<week>.jsonl
 Output: data/upcoming.json (updated calendar), atomic write
+
+MUST run after classification but BEFORE `score.py --stage rank`. rank
+overwrites data/scored/<week>.jsonl in place, keeping only each section's
+top ~6 items — a game whose article didn't make that cut still belongs in
+the calendar, so this stage needs the full classified set, not the
+trimmed one. Weekly sequence:
+  score.py --stage prefilter -> [classify] -> upcoming.py -> score.py --stage rank -> build.py
 """
 
 from __future__ import annotations
