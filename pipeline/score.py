@@ -11,6 +11,7 @@ import argparse
 from typing import get_args
 
 from anthropic import Anthropic
+from pydantic import ValidationError
 
 from models import RawItem, ScoredItem, SectionId
 
@@ -368,8 +369,13 @@ def main() -> None:
     if args.stage == "prefilter":
         raw_items: list[RawItem] = []
         with open(f"data/raw/{args.week}.jsonl", encoding="utf-8") as f:
-            for line in f:
-                raw_items.append(RawItem.model_validate_json(line))
+            for line_no, line in enumerate(f, 1):
+                if not line.strip():
+                    continue
+                try:
+                    raw_items.append(RawItem.model_validate_json(line))
+                except ValidationError as exc:
+                    print(f"WARNING: data/raw/{args.week}.jsonl:{line_no} unparseable, skipping: {exc}")
 
         deduped = dedupe(raw_items)
         filtered = prefilter(deduped)
@@ -384,8 +390,13 @@ def main() -> None:
     elif args.stage == "rank":
         scored_items: list[ScoredItem] = []
         with open(f"data/scored/{args.week}.jsonl", encoding="utf-8") as f:
-            for line in f:
-                scored_items.append(ScoredItem.model_validate_json(line))
+            for line_no, line in enumerate(f, 1):
+                if not line.strip():
+                    continue
+                try:
+                    scored_items.append(ScoredItem.model_validate_json(line))
+                except ValidationError as exc:
+                    print(f"WARNING: data/scored/{args.week}.jsonl:{line_no} unparseable, skipping: {exc}")
 
         ranked = rank(scored_items)
 
