@@ -6,7 +6,7 @@
 
 **Architecture:** Three Python stages under `pipeline/`, each a standalone CLI script sharing a pydantic schema (`pipeline/models.py`) and ISO-week helpers (`pipeline/dates.py`): `fetch.py` reads `config/sources.yaml` and writes `data/raw/<week>.jsonl`; `score.py` dedupes/prefilters that (pure code) into `data/prefiltered/<week>.jsonl`, and — once classified — ranks `data/scored/<week>.jsonl` in place; `build.py` assembles the final `data/<week>.json` plus `data/index.json` and `data/seen.json`. No web site, no CI workflows, no local Claude-Code skill in this plan — those are separate plans layered on top of this one once the pipeline is proven with tests.
 
-**Tech Stack:** Python 3.12, pydantic v2, httpx + requests + feedparser (RSS), selectolax (HTML scraping), rapidfuzz (near-dupe titles), PyYAML, the `anthropic` SDK (only for the optional fully-automated classify/headline path — unused by the default no-API-key workflow), pytest + respx + freezegun for tests.
+**Tech Stack:** Python 3.14, pydantic v2, httpx + requests + feedparser (RSS), selectolax (HTML scraping), rapidfuzz (near-dupe titles), PyYAML, the `anthropic` SDK (only for the optional fully-automated classify/headline path — unused by the default no-API-key workflow), pytest + respx + freezegun for tests.
 
 **Spec:** `docs/superpowers/specs/2026-09-01-video-game-weekly-design.md`
 
