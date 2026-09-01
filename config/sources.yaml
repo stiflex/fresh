@@ -1,0 +1,140 @@
+# =============================================================================
+# sources.yaml — source registry for the fresh weekly video-game feed
+#
+# kind: rss | scrape
+# tier: 1 = always surface if relevant, 2 = normal, 3 = only if strong signal
+# sections: candidate sections. The classifier picks the final one, but a
+#           source's declared sections act as a prior / restrict the choices.
+#
+# relevance_keywords is intentionally empty: every source below is a
+# dedicated games outlet, so (unlike the AI-digest sibling project's arXiv
+# firehose, which is only ~10% AI-relevant) there is no off-topic-noise
+# problem to filter on title keywords. See pipeline/score.py's prefilter().
+# =============================================================================
+
+relevance_keywords: []
+
+sections:
+  - id: releases
+    label: "Releases & updates"
+    blurb: "New launches, major patches, DLC"
+  - id: indie
+    label: "Indie spotlight"
+    blurb: "Indie & showcase highlights"
+  - id: industry
+    label: "Industry"
+    blurb: "Funding, acquisitions, layoffs, publisher news"
+  - id: esports
+    label: "Esports"
+    blurb: "Competitive scene, tournaments"
+  - id: hardware
+    label: "Hardware"
+    blurb: "Consoles, GPUs, peripherals, storefront tech"
+  - id: community-modding
+    label: "Community & modding"
+    blurb: "Mods, UGC, speedrunning"
+  - id: dev-tech
+    label: "Dev & tech"
+    blurb: "Engines, tools, postmortems, technical breakdowns"
+
+# -----------------------------------------------------------------------------
+# OUTLETS — general games press
+# -----------------------------------------------------------------------------
+outlets:
+  - id: ign
+    kind: rss
+    url: https://feeds.ign.com/ign/games-all
+    tier: 1
+    sections: [releases, industry, hardware]
+  - id: kotaku
+    kind: rss
+    url: https://kotaku.com/rss
+    tier: 1
+    sections: [releases, industry, community-modding]
+  - id: polygon
+    kind: rss
+    url: https://www.polygon.com/rss/index.xml
+    tier: 1
+    sections: [releases, indie, industry]
+  - id: rockpapershotgun
+    kind: rss
+    url: https://www.rockpapershotgun.com/feed
+    tier: 1
+    sections: [indie, community-modding, releases]
+  - id: pcgamer
+    kind: rss
+    url: https://www.pcgamer.com/rss/
+    tier: 2
+    sections: [hardware, releases, community-modding]
+  - id: eurogamer
+    kind: rss
+    url: https://www.eurogamer.net/feed
+    tier: 2
+    sections: [releases, industry]
+  - id: gamespot
+    kind: rss
+    url: https://www.gamespot.com/feeds/mashup/
+    tier: 2
+    sections: [releases, industry, hardware]
+  - id: vg247
+    kind: rss
+    url: https://www.vg247.com/feed
+    tier: 2
+    sections: [industry, releases]
+  - id: arstechnica-gaming
+    kind: rss
+    url: https://feeds.arstechnica.com/arstechnica/gaming
+    tier: 3
+    sections: [hardware, industry]
+
+# -----------------------------------------------------------------------------
+# INDUSTRY — trade press
+# -----------------------------------------------------------------------------
+industry:
+  - id: gamedeveloper
+    kind: rss
+    url: https://www.gamedeveloper.com/rss.xml
+    tier: 2
+    sections: [dev-tech, industry]
+
+# -----------------------------------------------------------------------------
+# ESPORTS
+# -----------------------------------------------------------------------------
+esports:
+  - id: dotesports
+    kind: rss
+    url: https://dotesports.com/feed
+    tier: 2
+    sections: [esports]
+  - id: dexerto
+    kind: rss
+    url: https://www.dexerto.com/feed/
+    tier: 3
+    sections: [esports]
+
+# -----------------------------------------------------------------------------
+# COMMUNITY
+# -----------------------------------------------------------------------------
+community:
+  - id: reddit-games
+    kind: rss
+    url: https://www.reddit.com/r/Games/.rss
+    tier: 3
+    sections: [community-modding, indie]
+  - id: reddit-gamedev
+    kind: rss
+    url: https://www.reddit.com/r/gamedev/.rss
+    tier: 3
+    sections: [dev-tech, community-modding]
+
+# -----------------------------------------------------------------------------
+# NOT YET INCLUDED
+#
+# Steam's own news feed and itch.io's new-and-popular listing would be
+# strong platform-native sources (a "platforms" group), but this plan does
+# not include them: no page on either site was confirmed by hand to expose
+# a per-item RSS/JSON feed with a real published_at (itch.io's catalog pages
+# in particular look like they lack one). Add a "platforms" group here once
+# a specific URL has been verified against a real fetch run — see Task 8 and
+# pipeline/fetch.py's fetch_scrape as the fallback if no feed exists.
+# -----------------------------------------------------------------------------
