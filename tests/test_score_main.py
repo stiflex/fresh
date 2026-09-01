@@ -95,3 +95,70 @@ def test_main_rejects_week_and_date_together(tmp_path, monkeypatch):
     )
     with pytest.raises(SystemExit):
         score.main()
+
+
+def test_main_prefilter_stage_skips_malformed_line_with_warning(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "sources.yaml").write_text(
+        "outlets:\n  - id: s\n    kind: rss\n    tier: 1\n    sections: [releases]\n"
+    )
+    raw_item = {
+        "source_id": "s",
+        "kind": "article",
+        "title": "A Story",
+        "url": "https://example.com/a",
+        "published_at": "2026-08-18T00:00:00Z",
+        "summary": "Summary",
+        "authors": [],
+        "meta": {},
+    }
+    (tmp_path / "data" / "raw").mkdir(parents=True)
+    malformed_line = "not valid json"
+    (tmp_path / "data" / "raw" / "2026-W34.jsonl").write_text(
+        json.dumps(raw_item) + "\n" + malformed_line + "\n\n"
+    )
+
+    monkeypatch.setattr("sys.argv", ["score.py", "--week", "2026-W34", "--stage", "prefilter"])
+    score.main()  # must not raise
+
+    captured = capsys.readouterr()
+    assert "WARNING" in captured.out
+    assert "data/raw/2026-W34.jsonl:2" in captured.out
+
+    out_path = tmp_path / "data" / "prefiltered" / "2026-W34.jsonl"
+    lines = out_path.read_text().splitlines()
+    assert len(lines) == 1
+    row = json.loads(lines[0])
+    assert row["title"] == "A Story"
+
+
+def test_main_rank_stage_skips_malformed_line_with_warning(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "data" / "scored").mkdir(parents=True)
+    scored_item = ScoredItem(
+        source_id="s",
+        kind="article",
+        title="A Story",
+        url="https://example.com/a",
+        published_at="2026-08-18T00:00:00Z",
+        section="releases",
+        score=0.9,
+        why="why",
+    )
+    malformed_line = "not valid json"
+    (tmp_path / "data" / "scored" / "2026-W34.jsonl").write_text(
+        malformed_line + "\n" + scored_item.model_dump_json() + "\n\n"
+    )
+
+    monkeypatch.setattr("sys.argv", ["score.py", "--week", "2026-W34", "--stage", "rank"])
+    score.main()  # must not raise
+
+    captured = capsys.readouterr()
+    assert "WARNING" in captured.out
+    assert "data/scored/2026-W34.jsonl:1" in captured.out
+
+    out_path = tmp_path / "data" / "scored" / "2026-W34.jsonl"
+    lines = out_path.read_text().splitlines()
+    assert len(lines) == 1
+    assert json.loads(lines[0])["title"] == "A Story"
