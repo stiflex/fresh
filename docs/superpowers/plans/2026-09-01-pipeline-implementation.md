@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Python 3.12, matching `.python-version`.
+- Python 3.14, matching `.python-version`.
 - Dependency floors: `httpx[http2]>=0.27`, `requests>=2.32`, `feedparser>=6.0`, `pydantic>=2.7`, `PyYAML>=6.0`, `selectolax>=0.3`, `rapidfuzz>=3.9`, `anthropic>=0.40`. (No `tenacity` — nothing in this codebase actually imports it; don't add an unused dependency.)
 - ISO weeks throughout, UTC, half-open interval `[monday 00:00, next monday 00:00)`.
 - No `ANTHROPIC_API_KEY` required anywhere in this plan's default path — `classify_and_score`/`write_headline`/`write_title` exist and are unit-tested (mocked `Anthropic` client) but nothing in this plan's tasks calls them against a real API.
