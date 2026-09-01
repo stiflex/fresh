@@ -15,6 +15,9 @@
 relevance_keywords: []
 
 sections:
+  - id: new-releases
+    label: "New releases"
+    blurb: "Games, expansions, and major updates that actually shipped this week"
   - id: releases
     label: "Releases & updates"
     blurb: "New launches, major patches, DLC"

@@ -150,9 +150,15 @@ by players and industry watchers. For each item below, decide:
 written"
 - why: <=20 words, the editorial line the reader sees. State what changed, \
 no hedging, no "in this article" framing.
+- platforms: list of platforms the item itself names (e.g. ["PC", "PS5", \
+"Switch 2"]) — omit or leave empty if the item doesn't state any.
+- release_date: the release date/window the item itself states, as free \
+text (e.g. "2027", "Jan 2027", "2026-09-15") — omit or null if the item \
+doesn't state one. Never infer or guess a date that isn't in the text.
 
 Return a JSON array only, no prose, one object per item:
-[{{"url": "...", "section": "...", "score": 0.0, "why": "..."}}, ...]
+[{{"url": "...", "section": "...", "score": 0.0, "why": "...", \
+"platforms": [...], "release_date": "..."}}, ...]
 
 Items:
 {items}
@@ -162,10 +168,13 @@ Items:
 def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
     """One batched LLM call per ~20 items. Ask for strict JSON:
 
-        {"url": ..., "section": <SectionId>, "score": 0..1, "why": "<=20 words"}
+        {"url": ..., "section": <SectionId>, "score": 0..1, "why": "<=20 words",
+         "platforms": [...], "release_date": "..." or null}
 
     Validate every returned section against SectionId and drop malformed
-    rows rather than trusting the model's output shape.
+    rows rather than trusting the model's output shape. `platforms` and
+    `release_date` are optional and only ever carry what the item itself
+    states — never inferred.
     """
     import json
 
@@ -214,6 +223,13 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
             if not why:
                 continue
 
+            platforms = row.get("platforms")
+            if not isinstance(platforms, list) or not all(isinstance(p, str) for p in platforms):
+                platforms = []
+            release_date = row.get("release_date")
+            if not isinstance(release_date, str) or not release_date.strip():
+                release_date = None
+
             mirror_urls = source_item.meta.get("mirror_urls", [])
             results.append(
                 ScoredItem(
@@ -223,6 +239,8 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
                     score=float(score),
                     why=why,
                     mirrors=mirror_urls,
+                    platforms=platforms,
+                    release_date=release_date,
                 )
             )
     return results
