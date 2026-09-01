@@ -9,6 +9,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from pydantic import BaseModel, Field, HttpUrl
 
 SectionId = Literal[
+    "new-releases",
     "releases",
     "indie",
     "industry",
@@ -61,6 +62,9 @@ class ScoredItem(RawItem):
     score: float  # 0..1
     why: str  # one sentence, shown in the UI as the editorial line
     mirrors: list[HttpUrl] = Field(default_factory=list)  # other URLs for same item
+    platforms: list[str] = Field(default_factory=list)  # e.g. ["PC", "PS5", "Switch 2"] — only when the item itself states them
+    release_date: str | None = None  # free text ("2027", "Jan 2027", "2026-09-15") — only when the item itself states one
+    game_name: str | None = None  # canonical game title, only when the item is about one specific game
 
 
 class Section(BaseModel):
