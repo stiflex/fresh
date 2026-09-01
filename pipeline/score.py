@@ -369,7 +369,10 @@ def main() -> None:
         help=(
             "prefilter: dedupe+prefilter data/raw -> data/prefiltered (no LLM, runs in CI). "
             "rank: apply the rank formula to an already-classified data/scored/<week>.jsonl "
-            "in place (no LLM, runs locally after manual/Claude-Code classification)."
+            "IN PLACE, trimming it to each section's top items (no LLM, runs locally after "
+            "manual/Claude-Code classification). Run pipeline/upcoming.py against the "
+            "full classified data/scored/<week>.jsonl BEFORE this stage — rank's in-place "
+            "trim would otherwise drop games it needs to see."
         ),
     )
     args = parser.parse_args()
