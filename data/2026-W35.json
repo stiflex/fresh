@@ -2,7 +2,7 @@
   "week": "2026-W35",
   "starts_on": "2026-08-24T00:00:00Z",
   "ends_on": "2026-08-31T00:00:00Z",
-  "generated_at": "2026-09-01T23:58:13.392313Z",
+  "generated_at": "2026-09-02T00:24:40.768422Z",
   "title": "A Decade of Valve History Leaks Out",
   "headline": "A 12TB Valve archive leak surfaces early Portal 2 builds and hints of Half-Life 2: Episode Three, while Rockstar confirms GTA 6 will ship without microtransactions or generative AI.",
   "sections": [
@@ -116,7 +116,10 @@
           "section": "releases",
           "score": 0.65,
           "why": "Rockstar breaks silence on GTA 6 leaks, calls spoilers unfortunate.",
-          "mirrors": [],
+          "mirrors": [
+            "https://www.eurogamer.net/gta-6-leaks-rockstar-statement-spoilers",
+            "https://www.gamedeveloper.com/business/rockstar-games-heartbroken-by-grand-theft-auto-6-leaks"
+          ],
           "platforms": [],
           "release_date": null,
           "game_name": null
@@ -133,7 +136,10 @@
           "section": "releases",
           "score": 0.6,
           "why": "Leaked footage of EA's long-dormant Iron Man game shows WIP combat.",
-          "mirrors": [],
+          "mirrors": [
+            "https://www.eurogamer.net/ea-motive-iron-man-gameplay-footage-leak",
+            "https://www.eurogamer.net/iron-man-avalanche-studios-gameplay-leak"
+          ],
           "platforms": [],
           "release_date": null,
           "game_name": null
@@ -167,7 +173,9 @@
           "section": "releases",
           "score": 0.55,
           "why": "Star Citizen spin-off Squadron 42 delayed again, blamed partly on GTA 6.",
-          "mirrors": [],
+          "mirrors": [
+            "https://www.eurogamer.net/squadron-42-delayed-2027-gta-6"
+          ],
           "platforms": [],
           "release_date": null,
           "game_name": null
@@ -342,17 +350,17 @@
           "game_name": null
         },
         {
-          "source_id": "eurogamer",
+          "source_id": "gamedeveloper",
           "kind": "article",
-          "title": "Squadron 42 delayed to 2027, with Star Citizen dev blaming GTA 6",
-          "url": "https://www.eurogamer.net/squadron-42-delayed-2027-gta-6",
-          "published_at": "2026-08-29T12:09:49Z",
-          "summary": "<img src=\"https://assetsio.gnwcdn.com/crytek-wants-to-dismiss-its-own-lawsuit-against-the-star-citizen-developer-until-squadron-42-comes-out-1578155315461.jpg?width=690&amp;quality=85&amp;format=jpg&amp;auto=webp\" /> <p>Cloud Imperium Games has delayed Squadron 42, its long-in-development <a href=\"https://www.eurogamer.net/games/star-citizen\">Star Citizen</a> spin-off, to Q2 2027, with studio boss Chris Roberts arguing the game would be drowned out by <a href=\"https://www.eurogamer.net/gta-6-everything-we-know-so-far-9357\">GTA 6</a>.</p> <p><a href=\"https://www.eurogamer.net/squadron-42-delayed-2027-gta-6\">Read more</a></p>",
+          "title": "Riot Games is winding down 2XKO active development in December",
+          "url": "https://www.gamedeveloper.com/business/riot-games-is-winding-down-fighter-2xko-in-december-2026",
+          "published_at": "2026-08-25T17:01:51Z",
+          "summary": "Riot says it hasn't seen 'enough players stick with the game to get to a path toward sustainability.'",
           "authors": [],
           "meta": {},
           "section": "industry",
           "score": 0.5,
-          "why": "Star Citizen dev delays Squadron 42 to 2027, citing GTA 6 buzz.",
+          "why": "Riot Games is winding down active development on fighting game 2XKO.",
           "mirrors": [],
           "platforms": [],
           "release_date": null,
@@ -412,7 +420,9 @@
           "section": "hardware",
           "score": 0.5,
           "why": "Xbox announces a disc-to-digital program for physical game owners.",
-          "mirrors": [],
+          "mirrors": [
+            "https://arstechnica.com/gaming/2026/08/xboxs-new-disc-to-digital-program-gives-physical-games-a-digital-future/"
+          ],
           "platforms": [],
           "release_date": null,
           "game_name": null
@@ -452,23 +462,6 @@
           "game_name": null
         },
         {
-          "source_id": "arstechnica-gaming",
-          "kind": "article",
-          "title": "Xbox’s new disc-to-digital program gives physical games a digital future",
-          "url": "https://arstechnica.com/gaming/2026/08/xboxs-new-disc-to-digital-program-gives-physical-games-a-digital-future/",
-          "published_at": "2026-08-26T16:59:41Z",
-          "summary": "\"Most\" Xbox One and Series X games are compatible; discs will still work after being claimed.",
-          "authors": [],
-          "meta": {},
-          "section": "hardware",
-          "score": 0.4,
-          "why": "Xbox's disc-to-digital program gives physical game owners a digital future.",
-          "mirrors": [],
-          "platforms": [],
-          "release_date": null,
-          "game_name": null
-        },
-        {
           "source_id": "rockpapershotgun",
           "kind": "article",
           "title": "Nvidia DLSS 4.5 Ray Reconstruction, out now, ups shadow quality and more accurately illuminates trash bags",
@@ -497,6 +490,23 @@
           "section": "hardware",
           "score": 0.3,
           "why": "Nvidia's PUBG genAI teammate tech is coming to RPG Aniimo next year.",
+          "mirrors": [],
+          "platforms": [],
+          "release_date": null,
+          "game_name": null
+        },
+        {
+          "source_id": "eurogamer",
+          "kind": "article",
+          "title": "Call of Duty: Modern Warfare 4 Switch 2 physical version is seemingly a code-in-box",
+          "url": "https://www.eurogamer.net/call-of-duty-modern-warfare-4-switch-2-code-in-box",
+          "published_at": "2026-08-24T11:41:32Z",
+          "summary": "<img src=\"https://assetsio.gnwcdn.com/modern-warfare-4-campaign-shot-crop-1.jpg?width=690&amp;quality=85&amp;format=jpg&amp;auto=webp\" /> <p>Call of Duty: Modern Warfare 4 is the first game in the series to arrive on a Nintendo console since Ghosts on the Wii U in 2013, 13 years ago. The upcoming shooter <a href=\"https://www.eurogamer.net/call-of-duty-modern-warfare-4-reveal\">lands on Switch 2 day-and-date with PC, PlayStation and Xbox</a>. Though there's plenty of excitement to go around, a detail has emerged that may put a damper on that.</p> <p><a href=\"https://www.eurogamer.net/call-of-duty-modern-warfare-4-switch-2-code-in-box\">Read more</a></p>",
+          "authors": [],
+          "meta": {},
+          "section": "hardware",
+          "score": 0.25,
+          "why": "Call of Duty: Modern Warfare 4's Switch 2 box ships as a code-in-box.",
           "mirrors": [],
           "platforms": [],
           "release_date": null,
@@ -615,24 +625,9 @@
           "section": "dev-tech",
           "score": 0.75,
           "why": "12TB Valve leak reveals early Portal 2 builds and Half-Life 2: Episode Three hints.",
-          "mirrors": [],
-          "platforms": [],
-          "release_date": null,
-          "game_name": null
-        },
-        {
-          "source_id": "arstechnica-gaming",
-          "kind": "article",
-          "title": "A 12TB Steam “teraleak” spills more than a decade of lost PC gaming history",
-          "url": "https://arstechnica.com/gaming/2026/08/a-12tb-steam-teraleak-spills-more-than-a-decade-of-lost-pc-gaming-history/",
-          "published_at": "2026-08-30T21:40:56Z",
-          "summary": "Cut content from <em>Portal 2</em>, hints of <em>Half Life 2: Episode 3</em>, and so much more.",
-          "authors": [],
-          "meta": {},
-          "section": "dev-tech",
-          "score": 0.6,
-          "why": "A 12TB Steam leak spills over a decade of lost PC gaming history.",
-          "mirrors": [],
+          "mirrors": [
+            "https://arstechnica.com/gaming/2026/08/a-12tb-steam-teraleak-spills-more-than-a-decade-of-lost-pc-gaming-history/"
+          ],
           "platforms": [],
           "release_date": null,
           "game_name": null
@@ -683,6 +678,23 @@
           "section": "dev-tech",
           "score": 0.35,
           "why": "Developers discuss genAI backlash and the value of visual literacy.",
+          "mirrors": [],
+          "platforms": [],
+          "release_date": null,
+          "game_name": null
+        },
+        {
+          "source_id": "eurogamer",
+          "kind": "article",
+          "title": "Synths, impossible physics, and an \"erotic experience with a PS5 controller\" - the side projects of game devs are a reminder creativity is undimmable",
+          "url": "https://www.eurogamer.net/optimism-week-games-industry-side-projects-creativity",
+          "published_at": "2026-08-25T12:01:41Z",
+          "summary": "<img src=\"https://assetsio.gnwcdn.com/optimisim-week-side-projects.png?width=690&amp;quality=85&amp;format=jpg&amp;auto=webp\" /> <p>If there's been one theme I'd pick out from the many of these past few years of gaming discontent, it's the sense of all-out assault on creativity. This is the thing that makes games what they are, that makes them successful, that earns people money and gives people a reason to do the job in the first place, but it's also the thing that seems to be valued least at so many of those making the decisions. To those people creativity is something to be funneled, moulded, directed or strictly defined. Often, I suspect, it's just not really something directly thought about at all. At best it's a nice buzzword to roll out as needed, but rare one that's even remotely understood.</p> <p><a href=\"https://www.eurogamer.net/optimism-week-games-industry-side-projects-creativity\">Read more</a></p>",
+          "authors": [],
+          "meta": {},
+          "section": "dev-tech",
+          "score": 0.35,
+          "why": "Developers' side projects show creativity persists outside their day jobs.",
           "mirrors": [],
           "platforms": [],
           "release_date": null,
