@@ -1,0 +1,119 @@
+name: Fetch weekly issue (opens a PR for review)
+
+# No ANTHROPIC_API_KEY anywhere in this workflow. It only fetches and
+# prefilters (pure code, no LLM) and opens a PR. Classification, ranking,
+# the upcoming-games calendar update, and the headline are done locally via
+# Claude Code before the PR merges.
+
+on:
+  schedule:
+    - cron: "18 6 * * MON"  # Monday ~06:18 UTC — off the exact hour so it isn't
+                             # queued behind every other repo's "0 6" cron jobs
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "ISO week to fetch, e.g. 2026-W34. Defaults to last complete week."
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Restore fetch cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: feed-cache-${{ github.run_id }}
+          restore-keys: feed-cache-
+
+      - name: Resolve week
+        id: week
+        run: |
+          if [ -n "${{ inputs.week }}" ]; then
+            week="${{ inputs.week }}"
+          else
+            week=$(PYTHONPATH=pipeline python -c "from dates import current_week; print(current_week())")
+          fi
+          echo "week=$week" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch
+        run: |
+          set -o pipefail
+          python pipeline/fetch.py --week "${{ steps.week.outputs.week }}" 2>&1 | tee fetch.log
+          {
+            echo "## Fetch results — ${{ steps.week.outputs.week }}"
+            echo '```'
+            grep -A 999 "^done:" fetch.log || echo "(no summary line found)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prefilter (dedupe + prefilter, no LLM)
+        run: python pipeline/score.py --week "${{ steps.week.outputs.week }}" --stage prefilter
+
+      - name: Open PR with raw + prefiltered data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          week="${{ steps.week.outputs.week }}"
+          branch="issue/$week"
+          raw_path="data/raw/$week.jsonl"
+          prefiltered_path="data/prefiltered/$week.jsonl"
+
+          git config user.name  "fresh-weekly-bot"
+          git config user.email "bot@users.noreply.github.com"
+
+          if [ ! -s "$prefiltered_path" ]; then
+            echo "no items survived prefiltering for $week — skipping PR"
+            exit 0
+          fi
+
+          # Check BEFORE doing any work: if the branch already exists on
+          # origin, a PR is presumably already open and may already carry
+          # hand-written data/scored/, data/<week>.json, data/upcoming.json,
+          # etc. from a human running local classification. Never force-push
+          # over that.
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            echo "branch $branch already exists on origin — assuming a PR is already in progress, not touching it"
+            exit 0
+          fi
+
+          git checkout -b "$branch"
+          git add "$raw_path" "$prefiltered_path"
+          if git diff --staged --quiet; then
+            echo "nothing new for $week — skipping PR"
+            exit 0
+          fi
+
+          item_count=$(wc -l < "$prefiltered_path" | tr -d ' ')
+          git commit -m "fetch: $week ($item_count items ready for review)"
+          git push -u origin "$branch"
+
+          failures=$(grep -A 999 "source(s) failed this run" fetch.log 2>/dev/null || true)
+          if [ -n "$failures" ]; then
+            failures_block=$(printf '\n\n<details>\n<summary>Source fetch failures this run</summary>\n\n```\n%s\n```\n\n</details>\n' "$failures")
+          else
+            failures_block=""
+          fi
+
+          body=$(printf 'Fetched and prefiltered automatically \xe2\x80\x94 **no LLM calls made**. To finish this issue:\n\n1. `git fetch && git checkout %s`\n2. Open Claude Code in this repo and classify every item in `data/prefiltered/%s.jsonl` into `data/scored/%s.jsonl` (section, score, why, and platforms/release_date/game_name when the article states them) \xe2\x80\x94 no API key needed.\n3. `python pipeline/upcoming.py --week %s` \xe2\x80\x94 must run BEFORE the rank stage, or dated games that don'"'"'t make a section'"'"'s top items are lost from the calendar.\n4. `python pipeline/score.py --week %s --stage rank`\n5. `python pipeline/build.py --week %s --headline "..." --title "..." --analyzed-by claude-sonnet-5`\n6. Review the diff, commit, push to this branch.\n7. Merge this PR \xe2\x80\x94 the site deploys automatically.\n%s' "$branch" "$week" "$week" "$week" "$week" "$week" "$failures_block")
+
+          gh pr create \
+            --title "Week $week: $item_count items ready for review" \
+            --body "$body" \
+            --base main \
+            --head "$branch"
