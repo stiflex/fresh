@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getUpcomingGames } from "../lib/issues";
+
+const games = getUpcomingGames();
+---
+
+<Layout title="Upcoming" description="Games with a stated release date, tracked week over week until they ship.">
+  <h1 class="issue-title">Upcoming</h1>
+  <p class="issue-meta">Games with a stated release date, tracked as they're mentioned — each one listed once, dropped once its date passes.</p>
+  {games.length === 0 ? (
+    <p class="quiet-note">Nothing tracked yet.</p>
+  ) : (
+    <ul class="upcoming-list">
+      {games.map((game) => (
+        <li>
+          <a href={game.url} target="_blank" rel="noopener">{game.game_name}</a>
+          <span class="platforms">
+            {game.release_date}{game.platforms.length > 0 && ` · ${game.platforms.join(", ")}`}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>

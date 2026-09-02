@@ -1,0 +1,25 @@
+---
+import SectionBlock from "./SectionBlock.astro";
+import type { IssueData } from "../lib/issues";
+
+interface Props {
+  issue: IssueData;
+}
+
+const { issue } = Astro.props;
+const dateFmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" });
+const starts = dateFmt.format(new Date(issue.starts_on));
+const ends = dateFmt.format(new Date(new Date(issue.ends_on).getTime() - 1));
+---
+
+<h1 class="issue-title">{issue.title || issue.week}</h1>
+<p class="issue-meta">{starts} – {ends} · week {issue.week}</p>
+<p class="headline">{issue.headline}</p>
+
+{issue.sections.length === 0 && <p class="quiet-note">It was a quiet week — nothing cleared the bar.</p>}
+
+{issue.sections.map((section) => <SectionBlock section={section} />)}
+
+{issue.stats.analyzed_by && (
+  <p class="credit">Classified by {issue.stats.analyzed_by}.</p>
+)}

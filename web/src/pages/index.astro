@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import IssueView from "../components/IssueView.astro";
+import { getAllIssues } from "../lib/issues";
+
+const issues = getAllIssues();
+const latest = issues[0];
+---
+
+<Layout title={latest ? latest.title || latest.week : "No issues yet"}>
+  {latest ? (
+    <IssueView issue={latest} />
+  ) : (
+    <p class="quiet-note">No issues published yet — check back after the first Monday.</p>
+  )}
+</Layout>

@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A weekly video-game news digest, picked and summarized by Claude." } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · fresh</title>
+    <meta name="description" content={description} />
+    <link rel="alternate" type="application/rss+xml" title="fresh" href={`${base}rss.xml`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site">
+        <a class="brand" href={base}>fresh</a>
+        <nav>
+          <a href={base}>Latest</a>
+          <a href={`${base}archive`}>Archive</a>
+          <a href={`${base}upcoming`}>Upcoming</a>
+          <a href={`${base}rss.xml`}>RSS</a>
+        </nav>
+      </header>
+      <slot />
+      <footer class="site">
+        <p>fresh is a weekly video-game news digest — picked, scored, and summarized by Claude, reviewed by a human before it ships. No ads, no tracking.</p>
+      </footer>
+    </div>
+  </body>
+</html>
