@@ -167,6 +167,21 @@ ul.item-list .item-meta {
   color: var(--ink-soft);
 }
 
+ul.item-list .item-mirrors {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+ul.item-list .item-mirrors a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+}
+
+ul.item-list .item-mirrors a:hover {
+  color: var(--accent);
+}
+
 ul.item-list .item-meta .tag {
   display: inline-block;
   border: 1px solid var(--line);
