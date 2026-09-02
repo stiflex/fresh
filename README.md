@@ -85,8 +85,15 @@ docstrings.
    python pipeline/upcoming.py --week 2026-W36   # before rank — see above
    python pipeline/score.py --week 2026-W36 --stage rank
    python pipeline/build.py --week 2026-W36 \
-     --headline "..." --title "..." --analyzed-by claude-sonnet-5
+     --headline "..." --title "..." --analyzed-by claude-sonnet-5 \
+     --section-summaries '{"releases": "2-3 sentence recap...", ...}' \
+     --section-subtitles '{"releases": "short punchy line", ...}'
    ```
+   `--section-summaries`/`--section-subtitles` are optional (a section with
+   no entry just renders without one) but not optional in practice — write
+   one of each, for every section that has items, every week. Nothing
+   generates them automatically; skipping this step is how a future issue
+   silently ships without them.
    Review the diff, commit, and push to the same branch.
 3. **Merge the PR.** Merging to `main` triggers `deploy.yml`, which builds
    the Astro site and publishes it to GitHub Pages automatically — no
@@ -101,7 +108,8 @@ python -m venv .venv && .venv/Scripts/pip install -r requirements-dev.txt   # or
 # classify data/prefiltered/2026-W36.jsonl -> data/scored/2026-W36.jsonl by hand or via Claude Code, then:
 .venv/Scripts/python pipeline/upcoming.py --week 2026-W36
 .venv/Scripts/python pipeline/score.py --week 2026-W36 --stage rank
-.venv/Scripts/python pipeline/build.py --week 2026-W36 --headline "..." --title "..."
+.venv/Scripts/python pipeline/build.py --week 2026-W36 --headline "..." --title "..." \
+  --section-summaries '{"releases": "..."}' --section-subtitles '{"releases": "..."}'
 ```
 
 `classify_and_score()` (in `pipeline/score.py`) and `write_headline()`/
