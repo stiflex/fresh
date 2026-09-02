@@ -1,0 +1,30 @@
+---
+import type { SectionData } from "../lib/issues";
+
+interface Props {
+  section: SectionData;
+}
+
+const { section } = Astro.props;
+---
+
+<section class="section-block" id={section.id}>
+  <h2>{section.label}</h2>
+  <p class="section-blurb">{section.blurb}</p>
+  {section.summary && <p class="section-blurb">{section.summary}</p>}
+  <ul class="item-list">
+    {section.items.map((item) => (
+      <li>
+        <p class="why">
+          <a href={item.url} target="_blank" rel="noopener">{item.why}</a>
+        </p>
+        <p class="item-meta">
+          <span class="tag">{item.source_id}</span>
+          {item.game_name && <span class="tag">{item.game_name}</span>}
+          {item.release_date && <span class="tag">{item.release_date}</span>}
+          {item.platforms.length > 0 && <span class="tag">{item.platforms.join(", ")}</span>}
+        </p>
+      </li>
+    ))}
+  </ul>
+</section>

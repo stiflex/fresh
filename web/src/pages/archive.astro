@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getAllIssues } from "../lib/issues";
+
+const issues = getAllIssues();
+const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const dateFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+---
+
+<Layout title="Archive">
+  <h1 class="issue-title">Archive</h1>
+  <p class="issue-meta">Every issue, newest first.</p>
+  {issues.length === 0 ? (
+    <p class="quiet-note">No issues published yet.</p>
+  ) : (
+    <ul class="archive-list">
+      {issues.map((issue) => (
+        <li>
+          <a href={`${base}w/${issue.week}`}>{issue.title || issue.week}</a>
+          <span class="platforms">{dateFmt.format(new Date(issue.starts_on))}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>

@@ -1,0 +1,18 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import IssueView from "../../components/IssueView.astro";
+import { getAllIssues } from "../../lib/issues";
+
+export function getStaticPaths() {
+  return getAllIssues().map((issue) => ({
+    params: { week: issue.week },
+    props: { issue },
+  }));
+}
+
+const { issue } = Astro.props;
+---
+
+<Layout title={issue.title || issue.week}>
+  <IssueView issue={issue} />
+</Layout>
