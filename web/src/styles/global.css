@@ -124,7 +124,13 @@ section.section-block h2 {
 section.section-block .section-blurb {
   color: var(--ink-soft);
   font-size: 0.85rem;
-  margin: 0.4rem 0 1.2rem;
+  margin: 0.4rem 0 0.6rem;
+}
+
+section.section-block .section-summary {
+  color: var(--ink);
+  font-size: 0.95rem;
+  margin: 0 0 1.2rem;
 }
 
 ul.item-list {
@@ -154,12 +160,6 @@ ul.item-list .why a {
 
 ul.item-list .why a:hover {
   color: var(--accent);
-}
-
-ul.item-list .item-summary {
-  margin: 0 0 0.4rem;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
 }
 
 ul.item-list .item-meta {
