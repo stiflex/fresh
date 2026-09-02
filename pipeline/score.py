@@ -155,10 +155,21 @@ no hedging, no "in this article" framing.
 - release_date: the release date/window the item itself states, as free \
 text (e.g. "2027", "Jan 2027", "2026-09-15") — omit or null if the item \
 doesn't state one. Never infer or guess a date that isn't in the text.
+- game_name: the one specific game this item is about, if there is one — \
+omit or null for general industry/community news with no single-game \
+subject.
+- duplicate_of: if this item covers the exact same underlying story or \
+event as another item in THIS list — even reported with completely \
+different wording by a different outlet — set this to that other item's \
+url. Prefer marking the less detailed or less authoritative source as the \
+duplicate. Two independent reviews of the same game are NOT duplicates of \
+each other. Omit or null if this item isn't a duplicate of anything else \
+here.
 
 Return a JSON array only, no prose, one object per item:
 [{{"url": "...", "section": "...", "score": 0.0, "why": "...", \
-"platforms": [...], "release_date": "..."}}, ...]
+"platforms": [...], "release_date": "...", "game_name": "...", \
+"duplicate_of": "..."}}, ...]
 
 Items:
 {items}
@@ -169,12 +180,16 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
     """One batched LLM call per ~20 items. Ask for strict JSON:
 
         {"url": ..., "section": <SectionId>, "score": 0..1, "why": "<=20 words",
-         "platforms": [...], "release_date": "..." or null}
+         "platforms": [...], "release_date": "..." or null,
+         "game_name": "..." or null, "duplicate_of": "..." or null}
 
     Validate every returned section against SectionId and drop malformed
-    rows rather than trusting the model's output shape. `platforms` and
-    `release_date` are optional and only ever carry what the item itself
-    states — never inferred.
+    rows rather than trusting the model's output shape. `platforms`,
+    `release_date`, and `game_name` are optional and only ever carry what
+    the item itself states — never inferred. A row whose `duplicate_of`
+    names another URL present in the SAME batch is folded into that URL's
+    `mirrors` rather than kept as its own item (cross-batch duplicates
+    aren't caught — each batch is classified independently).
     """
     import json
 
@@ -207,6 +222,7 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
         if not isinstance(rows, list):
             continue
 
+        valid_rows: dict[str, dict] = {}
         for row in rows:
             if not isinstance(row, dict):
                 continue
@@ -222,6 +238,19 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
             why = row.get("why")
             if not why:
                 continue
+            valid_rows[url] = row
+
+        # Fold each row whose duplicate_of names another row IN THIS BATCH
+        # into that row's mirror set, rather than keeping it as its own item.
+        duplicate_urls_of: dict[str, list[str]] = {}
+        for url, row in list(valid_rows.items()):
+            target = row.get("duplicate_of")
+            if isinstance(target, str) and target in valid_rows and target != url:
+                duplicate_urls_of.setdefault(target, []).append(url)
+                del valid_rows[url]
+
+        for url, row in valid_rows.items():
+            source_item = by_url[url]
 
             platforms = row.get("platforms")
             if not isinstance(platforms, list) or not all(isinstance(p, str) for p in platforms):
@@ -229,18 +258,32 @@ def classify_and_score(items: list[RawItem]) -> list[ScoredItem]:
             release_date = row.get("release_date")
             if not isinstance(release_date, str) or not release_date.strip():
                 release_date = None
+            game_name = row.get("game_name")
+            if not isinstance(game_name, str) or not game_name.strip():
+                game_name = None
 
-            mirror_urls = source_item.meta.get("mirror_urls", [])
+            # dict.fromkeys dedupes while preserving order, and excludes the
+            # canonical item's own url — dedupe()'s mirror_urls and this
+            # batch's duplicate_urls_of are two independent "same story"
+            # signals that could in principle name the same url twice.
+            mirror_urls = [
+                u
+                for u in dict.fromkeys(
+                    [*source_item.meta.get("mirror_urls", []), *duplicate_urls_of.get(url, [])]
+                )
+                if u and u != url
+            ]
             results.append(
                 ScoredItem(
                     **source_item.model_dump(exclude={"meta"}),
                     meta=source_item.meta,
                     section=row["section"],
-                    score=float(score),
-                    why=why,
+                    score=float(row["score"]),
+                    why=row["why"],
                     mirrors=mirror_urls,
                     platforms=platforms,
                     release_date=release_date,
+                    game_name=game_name,
                 )
             )
     return results
