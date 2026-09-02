@@ -5,4 +5,5 @@ web/dist/
 web/.astro/
 .env
 .venv/
+docs/superpowers/
 data/raw/*.tmp

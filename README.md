@@ -9,9 +9,7 @@ classification step is done locally via Claude Code, and the result is
 reviewed as a normal pull request before it goes live.
 
 Forked from the architecture of [tentac](https://baiddd.github.io/tentac/),
-a sibling AI-news digest, and retargeted to games. See
-`docs/superpowers/specs/2026-09-01-video-game-weekly-design.md` for what
-carried over unchanged and what didn't.
+a sibling AI-news digest, and retargeted to games.
 
 - `config/sources.yaml` — every source, grouped by section, with a tier
 - `pipeline/` — fetch → score (dedupe/prefilter/classify/rank) → build →
@@ -20,7 +18,10 @@ carried over unchanged and what didn't.
   history. `data/upcoming.json` tracks every game with a stated release
   date, once each, until that date passes.
 - `web/` — Astro site published to GitHub Pages. Minimal newsletter
-  design — single column, one accent color, no cards or images.
+  design — single column, one accent color, no cards or images. Each item
+  shows its editorial `why` line, a cleaned excerpt of the source's own
+  summary, and — when another outlet covered the same story — an "Also
+  covered by" link to it.
 
 ## Sections
 
@@ -35,6 +36,19 @@ Seven, defined in `config/sources.yaml`:
   **Dev & tech** — as named.
 
 A section with no items renders as a quiet week — never padded to fill it.
+
+## Duplicate stories across outlets
+
+`score.py`'s `dedupe()` only catches near-identical titles or identical
+URLs — it won't catch two outlets covering the same story in unrelated
+wording (e.g. "Xbox announces a disc-to-digital feature" vs. "Xbox's new
+disc-to-digital program..."). Recognizing that takes judgment, so it's the
+classification step's job: `classify_and_score` (and the equivalent manual
+classification pass) can mark an item `duplicate_of` another item's URL
+*within the same batch*; the duplicate is folded into the canonical item's
+`mirrors` instead of shipping as its own digest entry, and shown on the
+site as "Also covered by". A `duplicate_of` pointing outside the batch
+(cross-batch, or hallucinated) is ignored, not treated as a drop.
 
 ## The upcoming-games calendar
 
@@ -63,9 +77,10 @@ docstrings.
    ```
    Open Claude Code in the repo and classify every item in
    `data/prefiltered/<week>.jsonl` into `data/scored/<week>.jsonl` —
-   section, score, a ≤20-word `why` line, and `game_name`/`release_date`/
-   `platforms` whenever the article itself states them (never inferred).
-   Then, **in this order**:
+   section, score, a ≤20-word `why` line, `game_name`/`release_date`/
+   `platforms` whenever the article itself states them (never inferred),
+   and `duplicate_of` when another item covers the same story (see
+   "Duplicate stories across outlets" below). Then, **in this order**:
    ```bash
    python pipeline/upcoming.py --week 2026-W36   # before rank — see above
    python pipeline/score.py --week 2026-W36 --stage rank
