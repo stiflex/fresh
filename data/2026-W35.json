@@ -2,7 +2,7 @@
   "week": "2026-W35",
   "starts_on": "2026-08-24T00:00:00Z",
   "ends_on": "2026-08-31T00:00:00Z",
-  "generated_at": "2026-09-02T00:24:40.768422Z",
+  "generated_at": "2026-09-02T07:21:36.687601Z",
   "title": "A Decade of Valve History Leaks Out",
   "headline": "A 12TB Valve archive leak surfaces early Portal 2 builds and hints of Half-Life 2: Episode Three, while Rockstar confirms GTA 6 will ship without microtransactions or generative AI.",
   "sections": [
@@ -80,7 +80,7 @@
           "game_name": "Lou's Lagoon"
         }
       ],
-      "summary": ""
+      "summary": "A quiet week for big launches, with Crimson Desert's free enhanced edition and a couple of day-and-date indies the standouts."
     },
     {
       "id": "releases",
@@ -177,8 +177,8 @@
             "https://www.eurogamer.net/squadron-42-delayed-2027-gta-6"
           ],
           "platforms": [],
-          "release_date": null,
-          "game_name": null
+          "release_date": "2027",
+          "game_name": "Squadron 42"
         },
         {
           "source_id": "eurogamer",
@@ -198,7 +198,7 @@
           "game_name": null
         }
       ],
-      "summary": ""
+      "summary": "GTA 6 dominated release news this week, from Rockstar's no-microtransactions promise to the leaked Iron Man footage EA finally addressed."
     },
     {
       "id": "indie",
@@ -291,7 +291,7 @@
           "game_name": "How to Fish"
         }
       ],
-      "summary": ""
+      "summary": "How to Fish crossed a million sales as Gamescom handed out its Dev Awards."
     },
     {
       "id": "industry",
@@ -401,7 +401,7 @@
           "game_name": null
         }
       ],
-      "summary": ""
+      "summary": "Labor and layoffs were the throughline: a Ubisoft strike, Schell Games cuts, and Riot pausing 2XKO."
     },
     {
       "id": "hardware",
@@ -513,7 +513,7 @@
           "game_name": null
         }
       ],
-      "summary": ""
+      "summary": "Xbox's disc-to-digital push and a wave of Nvidia DLSS updates led the hardware news."
     },
     {
       "id": "community-modding",
@@ -606,7 +606,7 @@
           "game_name": null
         }
       ],
-      "summary": ""
+      "summary": "A large Morrowind mod expansion anchored an otherwise quiet week for community content."
     },
     {
       "id": "dev-tech",
@@ -718,7 +718,7 @@
           "game_name": null
         }
       ],
-      "summary": ""
+      "summary": "The week's biggest story was a 12TB Valve leak surfacing unreleased Half-Life 2 and Portal 2 material."
     }
   ],
   "stats": {

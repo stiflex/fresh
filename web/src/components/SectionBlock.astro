@@ -1,6 +1,6 @@
 ---
 import type { SectionData } from "../lib/issues";
-import { hostLabel, stripHtml } from "../lib/text";
+import { hostLabel } from "../lib/text";
 
 interface Props {
   section: SectionData;
@@ -12,35 +12,31 @@ const { section } = Astro.props;
 <section class="section-block" id={section.id}>
   <h2>{section.label}</h2>
   <p class="section-blurb">{section.blurb}</p>
-  {section.summary && <p class="section-blurb">{section.summary}</p>}
+  {section.summary && <p class="section-summary">{section.summary}</p>}
   <ul class="item-list">
-    {section.items.map((item) => {
-      const summary = stripHtml(item.summary);
-      return (
-        <li>
-          <p class="why">
-            <a href={item.url} target="_blank" rel="noopener">{item.why}</a>
+    {section.items.map((item) => (
+      <li>
+        <p class="why">
+          <a href={item.url} target="_blank" rel="noopener">{item.why}</a>
+        </p>
+        <p class="item-meta">
+          <span class="tag">{item.source_id}</span>
+          {item.game_name && <span class="tag">{item.game_name}</span>}
+          {item.release_date && <span class="tag">{item.release_date}</span>}
+          {item.platforms.length > 0 && <span class="tag">{item.platforms.join(", ")}</span>}
+        </p>
+        {item.mirrors.length > 0 && (
+          <p class="item-mirrors">
+            Also covered by:{" "}
+            {item.mirrors.map((mirror, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={mirror} target="_blank" rel="noopener">{hostLabel(mirror)}</a>
+              </>
+            ))}
           </p>
-          {summary && <p class="item-summary">{summary}</p>}
-          <p class="item-meta">
-            <span class="tag">{item.source_id}</span>
-            {item.game_name && <span class="tag">{item.game_name}</span>}
-            {item.release_date && <span class="tag">{item.release_date}</span>}
-            {item.platforms.length > 0 && <span class="tag">{item.platforms.join(", ")}</span>}
-          </p>
-          {item.mirrors.length > 0 && (
-            <p class="item-mirrors">
-              Also covered by:{" "}
-              {item.mirrors.map((mirror, i) => (
-                <>
-                  {i > 0 && ", "}
-                  <a href={mirror} target="_blank" rel="noopener">{hostLabel(mirror)}</a>
-                </>
-              ))}
-            </p>
-          )}
-        </li>
-      );
-    })}
+        )}
+      </li>
+    ))}
   </ul>
 </section>
