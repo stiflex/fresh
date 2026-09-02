@@ -21,6 +21,7 @@ export interface SectionData {
   label: string;
   blurb: string;
   items: ScoredItemData[];
+  subtitle?: string;
   summary?: string;
 }
 

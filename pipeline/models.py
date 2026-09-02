@@ -72,7 +72,8 @@ class Section(BaseModel):
     label: str
     blurb: str
     items: list[ScoredItem]
-    summary: str = ""  # one AI-written sentence on what happened in this section this week
+    subtitle: str = ""  # short punchy AI-written subtitle for this week, distinct from summary
+    summary: str = ""  # AI-written 2-3 sentence recap of what happened in this section this week
 
 
 class Issue(BaseModel):

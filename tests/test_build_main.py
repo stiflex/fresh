@@ -179,3 +179,44 @@ def test_main_section_summaries_flag(tmp_path, monkeypatch):
     issue = json.loads((tmp_path / "data" / "2026-W34.json").read_text())
     releases_section = next(s for s in issue["sections"] if s["id"] == "releases")
     assert releases_section["summary"] == "A quiet week for new releases."
+
+
+def test_main_section_subtitles_flag(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    _write_sources_yaml(tmp_path)
+    (tmp_path / "data" / "scored").mkdir(parents=True)
+    scored_item = {
+        "source_id": "s",
+        "kind": "article",
+        "title": "A Story",
+        "url": "https://example.com/a",
+        "published_at": "2026-08-18T00:00:00Z",
+        "summary": "",
+        "authors": [],
+        "meta": {},
+        "section": "releases",
+        "score": 0.9,
+        "why": "why line",
+        "mirrors": [],
+    }
+    (tmp_path / "data" / "scored" / "2026-W34.jsonl").write_text(json.dumps(scored_item) + "\n")
+
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "build.py",
+            "--week",
+            "2026-W34",
+            "--headline",
+            "h",
+            "--title",
+            "t",
+            "--section-subtitles",
+            '{"releases": "A quiet week"}',
+        ],
+    )
+    build.main()
+
+    issue = json.loads((tmp_path / "data" / "2026-W34.json").read_text())
+    releases_section = next(s for s in issue["sections"] if s["id"] == "releases")
+    assert releases_section["subtitle"] == "A quiet week"

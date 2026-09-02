@@ -11,6 +11,7 @@ const { section } = Astro.props;
 
 <section class="section-block" id={section.id}>
   <h2>{section.label}</h2>
+  {section.subtitle && <p class="section-subtitle">{section.subtitle}</p>}
   <p class="section-blurb">{section.blurb}</p>
   {section.summary && <p class="section-summary">{section.summary}</p>}
   <ul class="item-list">

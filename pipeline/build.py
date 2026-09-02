@@ -83,13 +83,17 @@ def build_issue(
     title: str | None = None,
     analyzed_by: str | None = None,
     section_summaries: dict[str, str] | None = None,
+    section_subtitles: dict[str, str] | None = None,
 ) -> Issue:
     """Assemble the issue. `headline`, if given, is used as-is (no LLM call) —
     this is how the no-API-key workflow supplies a headline written locally
     by Claude Code. Omit it to fall back to `write_headline` (an LLM call).
     `title` works the same way. `analyzed_by`, if given, is recorded in
     `stats["analyzed_by"]`. `section_summaries`, if given, maps a
-    `SectionId` to a one-sentence recap shown under that section's heading.
+    `SectionId` to a 2-3 sentence recap shown under that section's heading.
+    `section_subtitles` works the same way for a short punchy subtitle,
+    distinct from the longer `summary` — mirrors how the issue itself has
+    both a `title` and a longer `headline`.
     """
     from collections import defaultdict
 
@@ -98,6 +102,7 @@ def build_issue(
     starts_on, ends_on = week_bounds(week)
     meta = _section_meta()
     section_summaries = section_summaries or {}
+    section_subtitles = section_subtitles or {}
 
     by_section: dict[str, list[ScoredItem]] = defaultdict(list)
     for item in items:
@@ -109,6 +114,7 @@ def build_issue(
             label=meta[section_id]["label"],
             blurb=meta[section_id]["blurb"],
             items=sorted(section_items, key=lambda i: i.score, reverse=True),
+            subtitle=section_subtitles.get(section_id, ""),
             summary=section_summaries.get(section_id, ""),
         )
         for section_id, section_items in by_section.items()
@@ -168,10 +174,19 @@ def main() -> None:
     parser.add_argument(
         "--section-summaries",
         help=(
-            'JSON object mapping SectionId -> one-sentence recap, e.g. '
-            '\'{"releases": "A quiet week for new releases."}\'. '
+            'JSON object mapping SectionId -> a 2-3 sentence recap, e.g. '
+            '\'{"releases": "A quiet week for new releases. Nothing major shipped."}\'. '
             "Shown under each section's heading on the site. Sections with no "
             "entry get an empty summary — never an error."
+        ),
+    )
+    parser.add_argument(
+        "--section-subtitles",
+        help=(
+            'JSON object mapping SectionId -> a short punchy subtitle, e.g. '
+            '\'{"releases": "A quiet week"}\'. Distinct from --section-summaries\' '
+            "longer recap — mirrors how the issue itself has both --title and "
+            "--headline. Sections with no entry get an empty subtitle — never an error."
         ),
     )
     args = parser.parse_args()
@@ -183,6 +198,7 @@ def main() -> None:
     args.week = week_from_date(args.date) if args.date else args.week
 
     section_summaries = json.loads(args.section_summaries) if args.section_summaries else None
+    section_subtitles = json.loads(args.section_subtitles) if args.section_subtitles else None
 
     items: list[ScoredItem] = []
     with open(f"data/scored/{args.week}.jsonl", encoding="utf-8") as f:
@@ -197,6 +213,7 @@ def main() -> None:
         title=args.title,
         analyzed_by=args.analyzed_by,
         section_summaries=section_summaries,
+        section_subtitles=section_subtitles,
     )
 
     tmp_path = f"data/.{args.week}.json.tmp"
