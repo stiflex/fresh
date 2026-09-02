@@ -121,15 +121,24 @@ section.section-block h2 {
   border-bottom: 2px solid var(--accent);
 }
 
+section.section-block .section-subtitle {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin: 0.6rem 0 0.2rem;
+}
+
 section.section-block .section-blurb {
   color: var(--ink-soft);
   font-size: 0.85rem;
-  margin: 0.4rem 0 0.6rem;
+  margin: 0.2rem 0 0.6rem;
 }
 
 section.section-block .section-summary {
   color: var(--ink);
   font-size: 0.95rem;
+  line-height: 1.6;
   margin: 0 0 1.2rem;
 }
 

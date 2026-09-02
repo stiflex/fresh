@@ -148,6 +148,34 @@ def test_build_issue_defaults_summary_to_empty_string(monkeypatch):
     assert issue.sections[0].summary == ""
 
 
+def test_build_issue_applies_section_subtitles(monkeypatch):
+    monkeypatch.setattr(
+        "build._section_meta",
+        lambda: {"releases": {"label": "Releases & updates", "blurb": "New launches, major patches, DLC"}},
+    )
+    items = [_scored("releases", 0.9, "Alpha")]
+    issue = build_issue(
+        "2026-W34",
+        items,
+        headline="h",
+        title="t",
+        section_subtitles={"releases": "A quiet week"},
+    )
+
+    assert issue.sections[0].subtitle == "A quiet week"
+
+
+def test_build_issue_defaults_subtitle_to_empty_string(monkeypatch):
+    monkeypatch.setattr(
+        "build._section_meta",
+        lambda: {"releases": {"label": "Releases & updates", "blurb": "New launches, major patches, DLC"}},
+    )
+    items = [_scored("releases", 0.9, "Alpha")]
+    issue = build_issue("2026-W34", items, headline="h", title="t")
+
+    assert issue.sections[0].subtitle == ""
+
+
 def test_build_issue_uses_given_title_without_calling_write_title(monkeypatch):
     monkeypatch.setattr(
         "build._section_meta",

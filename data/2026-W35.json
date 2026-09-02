@@ -2,7 +2,7 @@
   "week": "2026-W35",
   "starts_on": "2026-08-24T00:00:00Z",
   "ends_on": "2026-08-31T00:00:00Z",
-  "generated_at": "2026-09-02T07:21:36.687601Z",
+  "generated_at": "2026-09-02T08:36:53.735839Z",
   "title": "A Decade of Valve History Leaks Out",
   "headline": "A 12TB Valve archive leak surfaces early Portal 2 builds and hints of Half-Life 2: Episode Three, while Rockstar confirms GTA 6 will ship without microtransactions or generative AI.",
   "sections": [
@@ -80,7 +80,8 @@
           "game_name": "Lou's Lagoon"
         }
       ],
-      "summary": "A quiet week for big launches, with Crimson Desert's free enhanced edition and a couple of day-and-date indies the standouts."
+      "subtitle": "A quiet week for launches",
+      "summary": "Crimson Desert Enhanced's free story overhaul was the week's most substantial launch, while Devolver counter-programmed GTA 6's release day with the tongue-in-cheek Volvy's Adventure: Reslimed. September's PlayStation Plus lineup also went live, and the seaplane adventure Lou's Lagoon quietly shipped."
     },
     {
       "id": "releases",
@@ -198,7 +199,8 @@
           "game_name": null
         }
       ],
-      "summary": "GTA 6 dominated release news this week, from Rockstar's no-microtransactions promise to the leaked Iron Man footage EA finally addressed."
+      "subtitle": "GTA 6 owns the news cycle",
+      "summary": "GTA 6 news crowded out almost everything else this week: Rockstar confirmed the game will launch without microtransactions or generative AI, addressed the ongoing leaks directly, and watched its extended-look reveal pull nearly four million livestream viewers. Away from Rockstar, Star Citizen spin-off Squadron 42 slipped again, to 2027, with GTA 6 partly to blame."
     },
     {
       "id": "indie",
@@ -291,7 +293,8 @@
           "game_name": "How to Fish"
         }
       ],
-      "summary": "How to Fish crossed a million sales as Gamescom handed out its Dev Awards."
+      "subtitle": "A million-seller and some awards",
+      "summary": "How to Fish kept climbing, crossing a million sales just two days after launch and picking up a private-lobbies update in the same week. Gamescom handed out its Dev Awards, with Mutter and Blue Prince among the winners, while smaller releases like Future? No Thanks! continue to wait on Steam approval."
     },
     {
       "id": "industry",
@@ -401,7 +404,8 @@
           "game_name": null
         }
       ],
-      "summary": "Labor and layoffs were the throughline: a Ubisoft strike, Schell Games cuts, and Riot pausing 2XKO."
+      "subtitle": "Strikes, layoffs, and a wind-down",
+      "summary": "Labor issues defined the week on the business side: a Spanish union called for continued strike action at Ubisoft's Barcelona mobile studio, and Among Us 3D co-developer Schell Games reportedly cut staff. Riot also confirmed it's winding down active development on 2XKO, while Roblox moved to restrict endless-scroll reward loops for under-16 players."
     },
     {
       "id": "hardware",
@@ -513,7 +517,8 @@
           "game_name": null
         }
       ],
-      "summary": "Xbox's disc-to-digital push and a wave of Nvidia DLSS updates led the hardware news."
+      "subtitle": "Xbox goes digital, Nvidia iterates",
+      "summary": "Xbox announced a disc-to-digital program letting owners convert physical Xbox One and Series X games, and a new bootloader emerged that strips the 'Meta' branding from the original Quest headset. On the Nvidia side, DLSS 4.5 Ray Reconstruction shipped while an unreleased DLSS 5 AI filter reportedly leaked out early."
     },
     {
       "id": "community-modding",
@@ -606,7 +611,8 @@
           "game_name": null
         }
       ],
-      "summary": "A large Morrowind mod expansion anchored an otherwise quiet week for community content."
+      "subtitle": "Morrowind gets bigger, quietly",
+      "summary": "The standout was Tamriel Rebuilt's Poison Song expansion for its long-running Morrowind mod, adding new quests and joinable factions. Red Dead Redemption 2's Nuevo Paraiso mod has a release date of its own next month, and the usual weekly discussion threads and roundups filled out an otherwise quiet section."
     },
     {
       "id": "dev-tech",
@@ -718,7 +724,8 @@
           "game_name": null
         }
       ],
-      "summary": "The week's biggest story was a 12TB Valve leak surfacing unreleased Half-Life 2 and Portal 2 material."
+      "subtitle": "A leak decades in the making",
+      "summary": "A 12TB Valve archive leak was the week's biggest technical story, surfacing early Portal 2 builds and hints of the long-rumored Half-Life 2: Episode Three. CD Projekt Red said The Witcher 4 is already running on every target platform, learning from Cyberpunk 2077's launch, while developers kept debating generative AI's place in the industry after another trailer sparked a brief, unfounded scare."
     }
   ],
   "stats": {
