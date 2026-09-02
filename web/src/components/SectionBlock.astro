@@ -1,6 +1,6 @@
 ---
 import type { SectionData } from "../lib/issues";
-import { stripHtml } from "../lib/text";
+import { hostLabel, stripHtml } from "../lib/text";
 
 interface Props {
   section: SectionData;
@@ -28,6 +28,17 @@ const { section } = Astro.props;
             {item.release_date && <span class="tag">{item.release_date}</span>}
             {item.platforms.length > 0 && <span class="tag">{item.platforms.join(", ")}</span>}
           </p>
+          {item.mirrors.length > 0 && (
+            <p class="item-mirrors">
+              Also covered by:{" "}
+              {item.mirrors.map((mirror, i) => (
+                <>
+                  {i > 0 && ", "}
+                  <a href={mirror} target="_blank" rel="noopener">{hostLabel(mirror)}</a>
+                </>
+              ))}
+            </p>
+          )}
         </li>
       );
     })}
