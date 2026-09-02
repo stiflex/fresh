@@ -156,6 +156,12 @@ ul.item-list .why a:hover {
   color: var(--accent);
 }
 
+ul.item-list .item-summary {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
 ul.item-list .item-meta {
   font-size: 0.8rem;
   color: var(--ink-soft);
